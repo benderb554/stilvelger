@@ -17,6 +17,7 @@
     <h1>STIL<span class="accent">VELGER</span></h1>
     <p class="tagline">Lik stiler · få outfits · finn klærne i butikk</p>
   </header>
+  <button id="konto-knapp" class="konto-knapp" title="Min bruker">👤</button>
 
   <nav class="tabs">
     <button class="tab active" data-tab="utforsk"><span class="tab-ikon">✦</span>Utforsk</button>
@@ -89,6 +90,14 @@
     </div>
   </div>
 
+  <!-- Modal for brukerkonto -->
+  <div id="konto-modal" class="modal hidden">
+    <div class="modal-content konto-card">
+      <button id="konto-close" class="modal-close">✕</button>
+      <div id="konto-body"></div>
+    </div>
+  </div>
+
   <!-- Modal for "finn lignende" -->
   <div id="modal" class="modal hidden">
     <div class="modal-content">
@@ -97,8 +106,13 @@
     </div>
   </div>
 
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
   <script src="data.js"></script>
   <script src="katalog.js"></script>
   <script src="app.js"></script>
+  <script src="bruker.js"></script>
 </body>
 </html>

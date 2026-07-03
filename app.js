@@ -26,6 +26,8 @@ function persist() {
   localStorage.setItem("stil_likes", JSON.stringify(state.likes));
   localStorage.setItem("stil_dislikes", JSON.stringify(state.dislikes));
   localStorage.setItem("stil_outfits", JSON.stringify(state.savedOutfits));
+  // synk til skyen hvis brukeren er innlogget (bruker.js)
+  if (typeof skyLagre === "function") skyLagre();
 }
 
 const byId = id => ITEMS.find(i => i.id === id);
