@@ -181,7 +181,12 @@ function renderCard() {
   const item = currentCard();
   const card = document.getElementById("swipe-card");
   card.className = "swipe-card";
+  card.style.transform = "";
+  card.style.setProperty("--like-op", 0);
+  card.style.setProperty("--nei-op", 0);
   card.innerHTML = `
+    <div class="stempel liker">LIKER</div>
+    <div class="stempel nei">NEI</div>
     <div class="garment">${garmentHTML(item)}</div>
     <h3>${item.navn}</h3>
     <div class="meta">${CATEGORIES[item.cat]} · ${COLORS[item.color].navn}</div>
@@ -191,6 +196,8 @@ function renderCard() {
 }
 
 function swipe(liked) {
+  if (swipeLaas) return; // ikke sveip mens forrige kort flyr ut
+  swipeLaas = true;
   const item = currentCard();
   state.likes = state.likes.filter(id => id !== item.id);
   state.dislikes = state.dislikes.filter(id => id !== item.id);
@@ -198,16 +205,59 @@ function swipe(liked) {
   persist();
 
   const card = document.getElementById("swipe-card");
+  card.style.transform = ""; // slipp drag-posisjonen så utflyvningen tar over
   card.classList.add(liked ? "fly-right" : "fly-left");
   setTimeout(() => {
     state.deckIndex++;
     renderCard();
     renderProfil();
+    swipeLaas = false;
   }, 260);
 }
 
+let swipeLaas = false; // hindrer dobbeltsveip mens kortet animeres ut
+
 document.getElementById("btn-ja").addEventListener("click", () => swipe(true));
 document.getElementById("btn-nei").addEventListener("click", () => swipe(false));
+
+// ---------- Dra kortet med finger eller mus (Tinder-stil) ----------
+const kortEl = document.getElementById("swipe-card");
+const SVEIPTERSKEL = 90; // piksler før draget teller som et valg
+let drag = null;
+
+kortEl.addEventListener("pointerdown", e => {
+  if (swipeLaas) return;
+  drag = { startX: e.clientX, dx: 0 };
+  try { kortEl.setPointerCapture(e.pointerId); } catch (_) { /* ikke støttet overalt */ }
+  kortEl.classList.add("dragging");
+});
+
+kortEl.addEventListener("pointermove", e => {
+  if (!drag) return;
+  drag.dx = e.clientX - drag.startX;
+  kortEl.style.transform = `translateX(${drag.dx}px) rotate(${drag.dx / 18}deg)`;
+  kortEl.style.setProperty("--like-op", Math.min(Math.max(drag.dx / SVEIPTERSKEL, 0), 1));
+  kortEl.style.setProperty("--nei-op", Math.min(Math.max(-drag.dx / SVEIPTERSKEL, 0), 1));
+});
+
+function avsluttDrag() {
+  if (!drag) return;
+  const dx = drag.dx;
+  drag = null;
+  kortEl.classList.remove("dragging");
+  if (dx > SVEIPTERSKEL) {
+    swipe(true);
+  } else if (dx < -SVEIPTERSKEL) {
+    swipe(false);
+  } else {
+    // ikke langt nok – kortet glir tilbake på plass
+    kortEl.style.transform = "";
+    kortEl.style.setProperty("--like-op", 0);
+    kortEl.style.setProperty("--nei-op", 0);
+  }
+}
+kortEl.addEventListener("pointerup", avsluttDrag);
+kortEl.addEventListener("pointercancel", avsluttDrag);
 document.addEventListener("keydown", e => {
   if (!document.getElementById("tab-utforsk").classList.contains("active")) return;
   if (e.key === "ArrowRight") swipe(true);
@@ -422,6 +472,17 @@ document.getElementById("modal-close").addEventListener("click", () =>
   document.getElementById("modal").classList.add("hidden"));
 document.getElementById("modal").addEventListener("click", e => {
   if (e.target.id === "modal") document.getElementById("modal").classList.add("hidden");
+});
+
+// ============================================================
+// VELKOMSTSKJERM – vises kun første gang
+// ============================================================
+if (!localStorage.getItem("stil_intro_sett")) {
+  document.getElementById("intro").classList.remove("hidden");
+}
+document.getElementById("intro-start").addEventListener("click", () => {
+  localStorage.setItem("stil_intro_sett", "1");
+  document.getElementById("intro").classList.add("hidden");
 });
 
 // ============================================================

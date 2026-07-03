@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stilvelger – finn din stil</title>
+  <meta name="description" content="Stilvelger hjelper deg å finne klesstilen din, setter sammen komplette antrekk for enhver anledning, og viser hvor plaggene kan kjøpes.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -61,6 +62,32 @@
       <div id="saved-outfits"></div>
     </section>
   </main>
+
+  <footer class="app-footer">
+    <p>© 2026 Stilvelger · <a href="om.html">Om appen</a> · <a href="mailto:oliverhenrix0@gmail.com">Kontakt</a></p>
+    <p class="disclosure">Kjøpslenker i appen kan være annonselenker (affiliate). Det koster deg ingenting ekstra.</p>
+  </footer>
+
+  <!-- Velkomstskjerm for nye brukere -->
+  <div id="intro" class="modal hidden">
+    <div class="modal-content intro-card">
+      <h2>Velkommen til Stilvelger 👋</h2>
+      <p class="intro-under">Tre steg til en bedre garderobe:</p>
+      <div class="intro-steg">
+        <div class="steg-ikon">✦</div>
+        <div><strong>Lik det du liker</strong><br><span>Sveip gjennom plagg — appen lærer stilen din.</span></div>
+      </div>
+      <div class="intro-steg">
+        <div class="steg-ikon">◈</div>
+        <div><strong>Få komplette outfits</strong><br><span>Velg et plagg + en anledning, og få antrekk som passer.</span></div>
+      </div>
+      <div class="intro-steg">
+        <div class="steg-ikon">♥</div>
+        <div><strong>Finn klærne i butikk</strong><br><span>Hvert plagg har pris og lenke til nettbutikk.</span></div>
+      </div>
+      <button id="intro-start" class="primary-btn">Kom i gang ✨</button>
+    </div>
+  </div>
 
   <!-- Modal for "finn lignende" -->
   <div id="modal" class="modal hidden">

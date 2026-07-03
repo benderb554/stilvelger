@@ -295,6 +295,61 @@ main { max-width: 760px; margin: 0 auto; padding: 14px 16px 130px; position: rel
 .lignende-rad .navn { font-size: 0.92rem; font-weight: 600; }
 .lignende-rad .detalj { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
 
+/* ---------- Bunntekst ---------- */
+.app-footer {
+  text-align: center; padding: 30px 16px 120px;
+  color: var(--muted); font-size: 0.82rem; position: relative; z-index: 1;
+}
+.app-footer a { color: var(--muted); text-decoration: underline; }
+.app-footer a:hover { color: var(--accent); }
+.disclosure { margin-top: 6px; font-size: 0.74rem; opacity: 0.8; }
+
+/* ---------- Om-siden ---------- */
+.om-side { max-width: 620px; }
+.om-side .card p, .om-side .card li { color: var(--ink); font-size: 0.94rem; line-height: 1.65; }
+.om-side .card h2 { margin: 0 0 10px; font-size: 1.1rem; }
+.om-liste { list-style: none; }
+.om-liste li { margin-bottom: 12px; }
+.om-tilbake {
+  display: block; text-align: center; text-decoration: none; margin-top: 22px;
+}
+
+/* ---------- Velkomstskjerm ---------- */
+.intro-card { max-width: 420px; }
+.intro-card h2 { font-size: 1.35rem; margin-bottom: 4px; }
+.intro-under { color: var(--muted); font-size: 0.9rem; margin-bottom: 18px; }
+.intro-steg {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 12px 0; border-bottom: 1px solid var(--line);
+}
+.intro-steg:last-of-type { border-bottom: none; }
+.intro-steg span { color: var(--muted); font-size: 0.86rem; line-height: 1.5; }
+.steg-ikon {
+  width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0;
+  background: rgba(183, 242, 75, 0.12); color: var(--accent);
+  display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+}
+
+/* ---------- Dra-for-å-sveipe ---------- */
+.swipe-card { touch-action: none; cursor: grab; user-select: none; }
+.swipe-card.dragging { transition: none; cursor: grabbing; }
+.stempel {
+  position: absolute; top: 26px; z-index: 2;
+  font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 1.3rem;
+  letter-spacing: 0.12em; padding: 6px 16px; border-radius: 10px;
+  border: 3px solid; opacity: 0; pointer-events: none;
+}
+.stempel.liker {
+  left: 20px; transform: rotate(-14deg);
+  color: var(--accent); border-color: var(--accent);
+  opacity: var(--like-op, 0);
+}
+.stempel.nei {
+  right: 20px; transform: rotate(14deg);
+  color: var(--danger); border-color: var(--danger);
+  opacity: var(--nei-op, 0);
+}
+
 @media (max-width: 480px) {
   .app-header h1 { font-size: 1.6rem; }
   .swipe-card .garment { height: 190px; }
