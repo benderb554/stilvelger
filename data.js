@@ -1,0 +1,237 @@
+// ============================================================
+// STILVELGER – demodata og plagg-grafikk
+// Farger, stiler og anledninger brukes av matche-motoren i app.js
+// ============================================================
+
+// ---------- Farger ----------
+// neutral: passer til alt. pairsWith: farger den kler godt sammen med.
+const COLORS = {
+  sort:       { navn: "Sort",       hex: "#26262b", neutral: true,  pairsWith: [] },
+  hvit:       { navn: "Hvit",       hex: "#f4f2ec", neutral: true,  pairsWith: [] },
+  gra:        { navn: "Grå",        hex: "#9aa0a6", neutral: true,  pairsWith: [] },
+  lysgra:     { navn: "Lysegrå",    hex: "#cfd3d8", neutral: true,  pairsWith: [] },
+  beige:      { navn: "Beige",      hex: "#d9c7a7", neutral: true,  pairsWith: [] },
+  marine:     { navn: "Marineblå",  hex: "#232f4b", neutral: true,  pairsWith: [] },
+  denim:      { navn: "Denimblå",   hex: "#5b7aa1", neutral: true,  pairsWith: [] },
+  brun:       { navn: "Brun",       hex: "#7a5c43", neutral: true,  pairsWith: [] },
+  bla:        { navn: "Blå",        hex: "#3567b2", neutral: false, pairsWith: ["hvit","beige","gra","lysgra","marine","brun","denim","sort"] },
+  lysbla:     { navn: "Lyseblå",    hex: "#8fb4dd", neutral: false, pairsWith: ["hvit","beige","marine","gra","brun","denim"] },
+  gronn:      { navn: "Grønn",      hex: "#3e6b4f", neutral: false, pairsWith: ["hvit","beige","sort","brun","gra","denim"] },
+  oliven:     { navn: "Oliven",     hex: "#6b6b3f", neutral: false, pairsWith: ["hvit","beige","sort","brun","denim"] },
+  rod:        { navn: "Rød",        hex: "#b03a3a", neutral: false, pairsWith: ["hvit","sort","gra","marine","denim"] },
+  burgunder:  { navn: "Burgunder",  hex: "#6e2b3a", neutral: false, pairsWith: ["hvit","sort","gra","marine","beige","denim"] },
+  rosa:       { navn: "Rosa",       hex: "#d99baa", neutral: false, pairsWith: ["hvit","gra","marine","beige","denim"] },
+  gul:        { navn: "Sennepsgul", hex: "#c9a13b", neutral: false, pairsWith: ["hvit","marine","gra","brun","denim"] },
+};
+
+// ---------- Stiler ----------
+const STYLES = {
+  casual:     "Casual",
+  smart:      "Smart casual",
+  street:     "Streetwear",
+  klassisk:   "Klassisk",
+  sporty:     "Sporty",
+};
+
+// ---------- Anledninger ----------
+const OCCASIONS = {
+  kompiser: { navn: "Ute med kompiser", emoji: "🍻" },
+  fest:     { navn: "Fest",             emoji: "🎉" },
+  jobb:     { navn: "Jobb",             emoji: "💼" },
+  date:     { navn: "Date",             emoji: "🌹" },
+  hverdag:  { navn: "Hverdag",          emoji: "☕" },
+  aktiv:    { navn: "Aktiv/trening",    emoji: "🏃" },
+};
+
+// ---------- Butikker (ekte søkelenker) ----------
+const STORES = {
+  zalando: { navn: "Zalando", url: q => `https://www.zalando.no/sok/?q=${encodeURIComponent(q)}` },
+  hm:      { navn: "H&M",     url: q => `https://www2.hm.com/no_no/search-results.html?q=${encodeURIComponent(q)}` },
+  zara:    { navn: "Zara",    url: q => `https://www.zara.com/no/no/search?searchTerm=${encodeURIComponent(q)}` },
+  weekday: { navn: "Weekday", url: q => `https://www.weekday.com/search?q=${encodeURIComponent(q)}` },
+};
+
+// ---------- Kategorier ----------
+const CATEGORIES = {
+  overdel:  "Overdel",
+  underdel: "Underdel",
+  sko:      "Sko",
+  yttertoy: "Yttertøy",
+  tilbehor: "Tilbehør",
+};
+
+// ============================================================
+// Katalog. Hvert plagg: kategori, type (styrer tegningen),
+// farge, stiler, anledninger, pris, butikk og søkeord.
+// ============================================================
+const ITEMS = [
+  // ---------- OVERDELER ----------
+  { id: "o1",  navn: "Blå oxfordskjorte",        cat: "overdel", type: "skjorte", color: "bla",       styles: ["smart","klassisk"],  occ: ["kompiser","jobb","date","fest"], pris: 499,  store: "zalando", q: "blå oxford skjorte herre", img: "img/o1-bla-skjorte.jpg" },
+  { id: "o2",  navn: "Hvit t-skjorte",            cat: "overdel", type: "tskjorte", color: "hvit",     styles: ["casual","street","sporty"], occ: ["kompiser","hverdag","aktiv","date"], pris: 149,  store: "hm", q: "hvit t-skjorte", img: "img/o2-hvit-tskjorte.jpg" },
+  { id: "o3",  navn: "Sort hoodie",               cat: "overdel", type: "hoodie",  color: "sort",      styles: ["street","casual"],   occ: ["kompiser","hverdag"],            pris: 399,  store: "weekday", q: "sort hoodie" },
+  { id: "o4",  navn: "Marineblå strikkegenser",   cat: "overdel", type: "genser",  color: "marine",    styles: ["smart","klassisk"],  occ: ["jobb","date","hverdag"],         pris: 599,  store: "zalando", q: "marineblå strikkegenser" },
+  { id: "o5",  navn: "Lyseblå linskjorte",        cat: "overdel", type: "skjorte", color: "lysbla",    styles: ["smart","casual"],    occ: ["kompiser","date","fest"],        pris: 449,  store: "zara", q: "lyseblå linskjorte" },
+  { id: "o6",  navn: "Burgunder pique",           cat: "overdel", type: "pique",   color: "burgunder", styles: ["smart","klassisk"],  occ: ["kompiser","jobb","date"],        pris: 349,  store: "zalando", q: "burgunder pique herre" },
+  { id: "o7",  navn: "Grå sweatshirt",            cat: "overdel", type: "genser",  color: "gra",       styles: ["casual","sporty"],   occ: ["hverdag","kompiser","aktiv"],    pris: 299,  store: "hm", q: "grå sweatshirt" },
+  { id: "o8",  navn: "Sort skjorte",              cat: "overdel", type: "skjorte", color: "sort",      styles: ["smart","street"],    occ: ["fest","date","kompiser"],        pris: 429,  store: "zara", q: "sort skjorte herre" },
+  { id: "o9",  navn: "Grønn overshirt",           cat: "overdel", type: "overshirt", color: "gronn",   styles: ["casual","street"],   occ: ["kompiser","hverdag"],            pris: 549,  store: "weekday", q: "grønn overshirt" },
+  { id: "o10", navn: "Hvit skjorte",              cat: "overdel", type: "skjorte", color: "hvit",      styles: ["klassisk","smart"],  occ: ["jobb","fest","date"],            pris: 399,  store: "hm", q: "hvit skjorte herre" },
+  { id: "o11", navn: "Sennepsgul t-skjorte",      cat: "overdel", type: "tskjorte", color: "gul",      styles: ["street","casual"],   occ: ["hverdag","kompiser"],            pris: 179,  store: "weekday", q: "gul t-skjorte" },
+  { id: "o12", navn: "Rosa skjorte",              cat: "overdel", type: "skjorte", color: "rosa",      styles: ["smart"],             occ: ["fest","date","jobb"],            pris: 459,  store: "zalando", q: "rosa skjorte herre" },
+  { id: "o13", navn: "Sort t-skjorte",            cat: "overdel", type: "tskjorte", color: "sort",     styles: ["street","casual","sporty"], occ: ["kompiser","hverdag","fest","aktiv"], pris: 149, store: "hm", q: "sort t-skjorte" },
+  { id: "o14", navn: "Beige strikkegenser",       cat: "overdel", type: "genser",  color: "beige",     styles: ["smart","klassisk","casual"], occ: ["date","hverdag","jobb"],  pris: 549,  store: "zara", q: "beige strikkegenser" },
+  { id: "o15", navn: "Rød rutete flanellskjorte", cat: "overdel", type: "skjorte", color: "rod",       styles: ["casual"],            occ: ["hverdag","kompiser"],            pris: 379,  store: "hm", q: "rød flanellskjorte" },
+  { id: "o16", navn: "Teknisk treningstrøye",     cat: "overdel", type: "tskjorte", color: "gra",      styles: ["sporty"],            occ: ["aktiv"],                         pris: 249,  store: "zalando", q: "teknisk t-skjorte trening" },
+
+  // ---------- UNDERDELER ----------
+  { id: "u1",  navn: "Beige chinos",              cat: "underdel", type: "bukse",  color: "beige",     styles: ["smart","klassisk","casual"], occ: ["kompiser","jobb","date","fest"], pris: 449, store: "zalando", q: "beige chinos" },
+  { id: "u2",  navn: "Mørk slim jeans",           cat: "underdel", type: "bukse",  color: "denim",     styles: ["casual","smart","street"], occ: ["kompiser","hverdag","date","fest"], pris: 599, store: "weekday", q: "mørk slim jeans", img: "img/u2-mork-jeans.jpg" },
+  { id: "u3",  navn: "Sort bukse",                cat: "underdel", type: "bukse",  color: "sort",      styles: ["smart","street","klassisk"], occ: ["fest","jobb","date","kompiser"], pris: 499, store: "zara", q: "sort bukse herre" },
+  { id: "u4",  navn: "Grå ullbukse",              cat: "underdel", type: "bukse",  color: "gra",       styles: ["klassisk","smart"],  occ: ["jobb","date"],                   pris: 699,  store: "zalando", q: "grå ullbukse herre" },
+  { id: "u5",  navn: "Lys vintage-jeans",         cat: "underdel", type: "bukse",  color: "lysbla",    styles: ["street","casual"],   occ: ["hverdag","kompiser"],            pris: 549,  store: "weekday", q: "lys jeans loose fit", img: "img/u5-lys-jeans.jpg" },
+  { id: "u6",  navn: "Marineblå chinos",          cat: "underdel", type: "bukse",  color: "marine",    styles: ["smart","klassisk"],  occ: ["jobb","date","kompiser"],        pris: 449,  store: "hm", q: "marineblå chinos" },
+  { id: "u7",  navn: "Sorte joggebukser",         cat: "underdel", type: "joggebukse", color: "sort",  styles: ["sporty","street","casual"], occ: ["aktiv","hverdag"],         pris: 299,  store: "hm", q: "sort joggebukse" },
+  { id: "u8",  navn: "Beige cargo-shorts",        cat: "underdel", type: "shorts", color: "beige",     styles: ["casual","street"],   occ: ["hverdag","kompiser"],            pris: 329,  store: "zara", q: "beige cargo shorts" },
+  { id: "u9",  navn: "Oliven cargobukse",         cat: "underdel", type: "bukse",  color: "oliven",    styles: ["street","casual"],   occ: ["hverdag","kompiser"],            pris: 499,  store: "weekday", q: "oliven cargobukse" },
+  { id: "u10", navn: "Treningsshorts",            cat: "underdel", type: "shorts", color: "sort",      styles: ["sporty"],            occ: ["aktiv"],                         pris: 199,  store: "hm", q: "treningsshorts herre" },
+
+  // ---------- SKO ----------
+  { id: "s1",  navn: "Hvite sneakers",            cat: "sko", type: "sneaker",     color: "hvit",      styles: ["casual","smart","street","sporty"], occ: ["kompiser","hverdag","date","fest","jobb"], pris: 899, store: "zalando", q: "hvite sneakers" },
+  { id: "s2",  navn: "Brune semskede boots",      cat: "sko", type: "boots",       color: "brun",      styles: ["smart","klassisk","casual"], occ: ["date","jobb","kompiser","fest"], pris: 1199, store: "zalando", q: "brune semskede boots chukka" },
+  { id: "s3",  navn: "Sorte chelsea boots",       cat: "sko", type: "boots",       color: "sort",      styles: ["smart","klassisk"],  occ: ["fest","jobb","date"],            pris: 1299, store: "zara", q: "sorte chelsea boots" },
+  { id: "s4",  navn: "Retro joggesko",            cat: "sko", type: "sneaker",     color: "gra",       styles: ["street","casual","sporty"], occ: ["hverdag","kompiser","aktiv"], pris: 999, store: "zalando", q: "retro joggesko" },
+  { id: "s5",  navn: "Sorte sneakers",            cat: "sko", type: "sneaker",     color: "sort",      styles: ["street","casual","sporty"], occ: ["kompiser","hverdag","fest","aktiv"], pris: 849, store: "hm", q: "sorte sneakers" },
+  { id: "s6",  navn: "Brune loafers",             cat: "sko", type: "loafer",      color: "brun",      styles: ["klassisk","smart"],  occ: ["jobb","date","fest"],            pris: 1099, store: "zalando", q: "brune loafers" },
+  { id: "s7",  navn: "Løpesko",                   cat: "sko", type: "sneaker",     color: "bla",       styles: ["sporty"],            occ: ["aktiv"],                         pris: 1299, store: "zalando", q: "løpesko herre" },
+
+  // ---------- YTTERTØY ----------
+  { id: "y1",  navn: "Beige trenchcoat",          cat: "yttertoy", type: "frakk",  color: "beige",     styles: ["klassisk","smart"],  occ: ["jobb","date"],                   pris: 1499, store: "zara", q: "beige trenchcoat" },
+  { id: "y2",  navn: "Sort bomberjakke",          cat: "yttertoy", type: "jakke",  color: "sort",      styles: ["street","casual"],   occ: ["kompiser","fest","hverdag"],     pris: 799,  store: "weekday", q: "sort bomberjakke" },
+  { id: "y3",  navn: "Denimjakke",                cat: "yttertoy", type: "jakke",  color: "denim",     styles: ["casual","street"],   occ: ["kompiser","hverdag"],            pris: 699,  store: "hm", q: "denimjakke herre" },
+  { id: "y4",  navn: "Marineblå blazer",          cat: "yttertoy", type: "blazer", color: "marine",    styles: ["klassisk","smart"],  occ: ["jobb","fest","date"],            pris: 1299, store: "zalando", q: "marineblå blazer" },
+  { id: "y5",  navn: "Grønn parkas",              cat: "yttertoy", type: "frakk",  color: "gronn",     styles: ["casual"],            occ: ["hverdag","kompiser"],            pris: 1199, store: "hm", q: "grønn parkas herre" },
+  { id: "y6",  navn: "Grå ullfrakk",              cat: "yttertoy", type: "frakk",  color: "gra",       styles: ["klassisk","smart"],  occ: ["jobb","date","fest"],            pris: 1799, store: "zara", q: "grå ullfrakk herre" },
+
+  // ---------- TILBEHØR ----------
+  { id: "t1",  navn: "Sort caps",                 cat: "tilbehor", type: "caps",   color: "sort",      styles: ["street","casual","sporty"], occ: ["hverdag","kompiser","aktiv"], pris: 199, store: "weekday", q: "sort caps" },
+  { id: "t2",  navn: "Brunt skinnbelte",          cat: "tilbehor", type: "belte",  color: "brun",      styles: ["klassisk","smart"],  occ: ["jobb","date","fest","kompiser"], pris: 299,  store: "zalando", q: "brunt skinnbelte" },
+  { id: "t3",  navn: "Sølvklokke",                cat: "tilbehor", type: "klokke", color: "lysgra",    styles: ["klassisk","smart"],  occ: ["jobb","date","fest"],            pris: 1499, store: "zalando", q: "klokke sølv herre" },
+  { id: "t4",  navn: "Sort belte",                cat: "tilbehor", type: "belte",  color: "sort",      styles: ["smart","street","klassisk"], occ: ["fest","jobb","kompiser"],  pris: 249,  store: "hm", q: "sort belte herre" },
+];
+
+// ============================================================
+// Plagg-grafikk: enkle SVG-tegninger farget etter plaggets farge
+// ============================================================
+
+// Gjør en hex-farge mørkere (til detaljer/kontur)
+function shade(hex, amt) {
+  const n = parseInt(hex.slice(1), 16);
+  const r = Math.max(0, Math.min(255, (n >> 16) + amt));
+  const g = Math.max(0, Math.min(255, ((n >> 8) & 0xff) + amt));
+  const b = Math.max(0, Math.min(255, (n & 0xff) + amt));
+  return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, "0")}`;
+}
+
+function garmentSVG(type, hex) {
+  const d = shade(hex, -35);   // mørkere detaljfarge
+  const l = shade(hex, 30);    // lysere detalj
+  const bodies = {
+    skjorte: `
+      <path d="M30 22 L42 16 L50 22 L58 16 L70 22 L82 34 L74 44 L70 40 L70 84 L30 84 L30 40 L26 44 L18 34 Z" fill="${hex}" stroke="${d}" stroke-width="2"/>
+      <path d="M42 16 L50 26 L58 16 L54 20 L50 30 L46 20 Z" fill="${d}"/>
+      <line x1="50" y1="30" x2="50" y2="82" stroke="${d}" stroke-width="1.5"/>
+      <circle cx="50" cy="40" r="1.4" fill="${d}"/><circle cx="50" cy="50" r="1.4" fill="${d}"/>
+      <circle cx="50" cy="60" r="1.4" fill="${d}"/><circle cx="50" cy="70" r="1.4" fill="${d}"/>`,
+    tskjorte: `
+      <path d="M32 20 L44 15 Q50 20 56 15 L68 20 L80 32 L72 42 L68 38 L68 84 L32 84 L32 38 L28 42 L20 32 Z" fill="${hex}" stroke="${d}" stroke-width="2"/>
+      <path d="M44 15 Q50 24 56 15" fill="none" stroke="${d}" stroke-width="2"/>`,
+    pique: `
+      <path d="M32 20 L44 15 L50 22 L56 15 L68 20 L80 32 L72 42 L68 38 L68 84 L32 84 L32 38 L28 42 L20 32 Z" fill="${hex}" stroke="${d}" stroke-width="2"/>
+      <path d="M44 15 L47 19 L50 30 L53 19 L56 15 L52 17 L50 22 L48 17 Z" fill="${d}"/>
+      <circle cx="50" cy="34" r="1.2" fill="${d}"/><circle cx="50" cy="27" r="1.2" fill="${d}"/>`,
+    genser: `
+      <path d="M32 22 L44 16 Q50 21 56 16 L68 22 L80 34 L72 44 L68 40 L68 80 L32 80 L32 40 L28 44 L20 34 Z" fill="${hex}" stroke="${d}" stroke-width="2"/>
+      <path d="M44 16 Q50 25 56 16" fill="none" stroke="${d}" stroke-width="3"/>
+      <rect x="32" y="78" width="36" height="6" fill="${d}" opacity="0.5"/>
+      <line x1="36" y1="79" x2="36" y2="84" stroke="${d}" stroke-width="1"/>
+      <line x1="44" y1="79" x2="44" y2="84" stroke="${d}" stroke-width="1"/>
+      <line x1="52" y1="79" x2="52" y2="84" stroke="${d}" stroke-width="1"/>
+      <line x1="60" y1="79" x2="60" y2="84" stroke="${d}" stroke-width="1"/>`,
+    hoodie: `
+      <path d="M32 24 L42 18 L58 18 L68 24 L80 36 L72 46 L68 42 L68 84 L32 84 L32 42 L28 46 L20 36 Z" fill="${hex}" stroke="${d}" stroke-width="2"/>
+      <path d="M42 18 Q50 8 58 18 Q54 26 50 26 Q46 26 42 18 Z" fill="${l}" stroke="${d}" stroke-width="2"/>
+      <line x1="47" y1="26" x2="46" y2="38" stroke="${d}" stroke-width="1.5"/>
+      <line x1="53" y1="26" x2="54" y2="38" stroke="${d}" stroke-width="1.5"/>
+      <path d="M38 66 L62 66 L60 80 L40 80 Z" fill="${l}" opacity="0.6" stroke="${d}" stroke-width="1.5"/>`,
+    overshirt: `
+      <path d="M30 22 L42 16 L50 24 L58 16 L70 22 L82 34 L74 44 L70 40 L70 84 L30 84 L30 40 L26 44 L18 34 Z" fill="${hex}" stroke="${d}" stroke-width="2"/>
+      <path d="M42 16 L50 26 L58 16 L54 20 L50 30 L46 20 Z" fill="${d}"/>
+      <line x1="50" y1="30" x2="50" y2="82" stroke="${d}" stroke-width="2"/>
+      <rect x="35" y="46" width="10" height="10" fill="none" stroke="${d}" stroke-width="1.5"/>
+      <rect x="55" y="46" width="10" height="10" fill="none" stroke="${d}" stroke-width="1.5"/>`,
+    bukse: `
+      <path d="M34 16 L66 16 L68 30 L70 84 L56 84 L52 40 L48 40 L44 84 L30 84 L32 30 Z" fill="${hex}" stroke="${d}" stroke-width="2"/>
+      <rect x="34" y="16" width="32" height="6" fill="${d}" opacity="0.4"/>
+      <line x1="50" y1="24" x2="50" y2="38" stroke="${d}" stroke-width="1.5"/>`,
+    joggebukse: `
+      <path d="M34 16 L66 16 L68 30 L68 82 L56 82 L53 40 L47 40 L44 82 L32 82 Z" fill="${hex}" stroke="${d}" stroke-width="2"/>
+      <rect x="34" y="16" width="32" height="6" fill="${l}" opacity="0.7"/>
+      <path d="M40 19 Q50 23 60 19" fill="none" stroke="${d}" stroke-width="1.5"/>
+      <rect x="32" y="78" width="12" height="5" fill="${d}" opacity="0.5"/>
+      <rect x="56" y="78" width="12" height="5" fill="${d}" opacity="0.5"/>`,
+    shorts: `
+      <path d="M32 26 L68 26 L72 62 L54 62 L50 42 L46 62 L28 62 Z" fill="${hex}" stroke="${d}" stroke-width="2"/>
+      <rect x="32" y="26" width="36" height="6" fill="${d}" opacity="0.4"/>`,
+    sneaker: `
+      <path d="M18 62 Q18 52 26 50 L44 46 Q50 45 54 49 L64 58 Q74 60 80 64 Q84 66 83 70 L82 74 L18 74 Z" fill="${hex}" stroke="${d}" stroke-width="2"/>
+      <path d="M16 74 L84 74 L83 79 Q60 83 30 81 Q18 80 16 76 Z" fill="${l}" stroke="${d}" stroke-width="1.5"/>
+      <line x1="34" y1="52" x2="42" y2="58" stroke="${d}" stroke-width="1.5"/>
+      <line x1="30" y1="55" x2="38" y2="61" stroke="${d}" stroke-width="1.5"/>`,
+    boots: `
+      <path d="M30 24 L54 24 L54 52 Q66 54 76 62 Q82 66 81 71 L80 76 L26 76 L28 50 Z" fill="${hex}" stroke="${d}" stroke-width="2"/>
+      <path d="M24 76 L82 76 L81 81 Q55 85 32 82 Q24 81 24 78 Z" fill="${shade(hex,-60)}" stroke="${d}" stroke-width="1.5"/>
+      <path d="M30 30 L54 30" stroke="${d}" stroke-width="1.5"/>`,
+    loafer: `
+      <path d="M20 62 Q22 54 32 52 L48 49 Q54 48 58 52 L68 60 Q78 62 82 66 Q85 68 84 72 L83 75 L20 75 Z" fill="${hex}" stroke="${d}" stroke-width="2"/>
+      <path d="M40 54 Q48 50 56 55 L52 60 Q46 57 42 59 Z" fill="${d}" opacity="0.6"/>
+      <path d="M18 75 L84 75 L83 79 Q55 82 30 80 Q19 79 18 77 Z" fill="${shade(hex,-60)}"/>`,
+    frakk: `
+      <path d="M32 18 L44 14 L50 22 L56 14 L68 18 L78 30 L72 40 L68 36 L68 88 L52 88 L52 50 L48 50 L48 88 L32 88 L32 36 L28 40 L22 30 Z" fill="${hex}" stroke="${d}" stroke-width="2"/>
+      <path d="M44 14 L50 24 L56 14" fill="none" stroke="${d}" stroke-width="2"/>
+      <line x1="50" y1="26" x2="50" y2="48" stroke="${d}" stroke-width="1.5"/>
+      <path d="M34 52 L46 52" stroke="${d}" stroke-width="1.5"/>
+      <path d="M54 52 L66 52" stroke="${d}" stroke-width="1.5"/>`,
+    jakke: `
+      <path d="M30 22 L42 16 L50 24 L58 16 L70 22 L80 34 L73 43 L68 39 L68 80 L32 80 L32 39 L27 43 L20 34 Z" fill="${hex}" stroke="${d}" stroke-width="2"/>
+      <path d="M42 16 L50 26 L58 16" fill="none" stroke="${d}" stroke-width="2"/>
+      <line x1="50" y1="26" x2="50" y2="78" stroke="${d}" stroke-width="2.5"/>
+      <rect x="32" y="76" width="36" height="6" fill="${d}" opacity="0.5"/>
+      <path d="M36 48 L44 48 L44 58 L36 58 Z" fill="none" stroke="${d}" stroke-width="1.5"/>
+      <path d="M56 48 L64 48 L64 58 L56 58 Z" fill="none" stroke="${d}" stroke-width="1.5"/>`,
+    blazer: `
+      <path d="M32 20 L44 14 L50 30 L56 14 L68 20 L78 32 L72 42 L68 38 L68 84 L52 84 L52 60 L48 60 L48 84 L32 84 L32 38 L28 42 L22 32 Z" fill="${hex}" stroke="${d}" stroke-width="2"/>
+      <path d="M44 14 L50 30 L44 40 L40 24 Z" fill="${d}" opacity="0.55"/>
+      <path d="M56 14 L50 30 L56 40 L60 24 Z" fill="${d}" opacity="0.55"/>
+      <circle cx="50" cy="48" r="1.5" fill="${d}"/><circle cx="50" cy="56" r="1.5" fill="${d}"/>
+      <path d="M36 56 L44 56" stroke="${d}" stroke-width="1.5"/>`,
+    caps: `
+      <path d="M26 56 Q26 32 50 32 Q74 32 74 56 L74 60 L26 60 Z" fill="${hex}" stroke="${d}" stroke-width="2"/>
+      <path d="M24 60 L76 60 Q88 60 90 66 Q90 69 86 69 L28 66 Q24 65 24 62 Z" fill="${d}"/>
+      <path d="M50 32 L50 58" stroke="${d}" stroke-width="1.5"/>
+      <circle cx="50" cy="32" r="2.5" fill="${d}"/>`,
+    belte: `
+      <path d="M14 44 L86 44 L86 58 L14 58 Z" fill="${hex}" stroke="${d}" stroke-width="2" rx="4"/>
+      <rect x="40" y="40" width="16" height="22" fill="none" stroke="${l}" stroke-width="3.5" rx="3"/>
+      <line x1="48" y1="44" x2="48" y2="58" stroke="${l}" stroke-width="2.5"/>
+      <circle cx="26" cy="51" r="1.6" fill="${d}"/><circle cx="33" cy="51" r="1.6" fill="${d}"/>`,
+    klokke: `
+      <rect x="42" y="10" width="16" height="24" fill="${shade(hex,-50)}" rx="3"/>
+      <rect x="42" y="66" width="16" height="24" fill="${shade(hex,-50)}" rx="3"/>
+      <circle cx="50" cy="50" r="20" fill="${hex}" stroke="${shade(hex,-70)}" stroke-width="3"/>
+      <circle cx="50" cy="50" r="15" fill="${l}"/>
+      <line x1="50" y1="50" x2="50" y2="40" stroke="${shade(hex,-80)}" stroke-width="2"/>
+      <line x1="50" y1="50" x2="58" y2="52" stroke="${shade(hex,-80)}" stroke-width="2"/>`,
+  };
+  const body = bodies[type] || bodies.tskjorte;
+  return `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">${body}</svg>`;
+}

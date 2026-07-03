@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stilvelger – finn din stil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="bg-glow"></div>
+
+  <header class="app-header">
+    <h1>STIL<span class="accent">VELGER</span></h1>
+    <p class="tagline">Lik stiler · få outfits · finn klærne i butikk</p>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="utforsk"><span class="tab-ikon">✦</span>Utforsk</button>
+    <button class="tab" data-tab="outfits"><span class="tab-ikon">◈</span>Outfits</button>
+    <button class="tab" data-tab="favoritter"><span class="tab-ikon">♥</span>Favoritter</button>
+  </nav>
+
+  <main>
+    <!-- ============ TAB: UTFORSK (stilvelger / sveip) ============ -->
+    <section id="tab-utforsk" class="tab-panel active">
+      <div class="swiper-wrap">
+        <div id="swipe-card" class="swipe-card"></div>
+        <div class="swipe-actions">
+          <button id="btn-nei" class="swipe-btn nei" title="Ikke min stil">✕</button>
+          <button id="btn-ja" class="swipe-btn ja" title="Liker!">❤</button>
+        </div>
+        <p class="hint">Lik plaggene du kunne tenkt deg å gå med – appen lærer stilen din.</p>
+      </div>
+
+      <div id="stilprofil" class="stilprofil"></div>
+    </section>
+
+    <!-- ============ TAB: OUTFITS (outfit-bygger) ============ -->
+    <section id="tab-outfits" class="tab-panel">
+      <div class="builder-controls card">
+        <h2>Lag et antrekk</h2>
+        <label for="base-select">Start med et plagg du har eller liker:</label>
+        <select id="base-select"></select>
+
+        <label>Hva er anledningen?</label>
+        <div id="occasion-chips" class="chips"></div>
+
+        <button id="btn-lag-outfits" class="primary-btn">Lag outfits ✨</button>
+      </div>
+      <div id="outfit-results"></div>
+    </section>
+
+    <!-- ============ TAB: FAVORITTER ============ -->
+    <section id="tab-favoritter" class="tab-panel">
+      <h2>Plagg du liker</h2>
+      <div id="fav-items" class="item-grid"></div>
+      <h2>Lagrede outfits</h2>
+      <div id="saved-outfits"></div>
+    </section>
+  </main>
+
+  <!-- Modal for "finn lignende" -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-content">
+      <button id="modal-close" class="modal-close">✕</button>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="katalog.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

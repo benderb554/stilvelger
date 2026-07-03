@@ -1,0 +1,304 @@
+/* ============ Stilvelger – moderne mørkt tema ============ */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0d0d12;
+  --card: #17171f;
+  --card-2: #1e1e28;
+  --ink: #f2f0eb;
+  --muted: #8b8a96;
+  --line: rgba(255, 255, 255, 0.07);
+  --accent: #b7f24b;           /* elektrisk lime */
+  --accent-ink: #10130a;
+  --accent-2: #8a6bf2;         /* lilla for gradienter */
+  --danger: #ff5d6c;
+  --tile: #f0eee7;             /* lys flate bak plaggtegninger */
+  --radius: 22px;
+  --shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+}
+
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Myk glød i bakgrunnen */
+.bg-glow {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(600px 400px at 85% -5%, rgba(138, 107, 242, 0.16), transparent 70%),
+    radial-gradient(700px 500px at 0% 100%, rgba(183, 242, 75, 0.07), transparent 70%);
+}
+
+h1, h2, h3 { font-family: "Space Grotesk", "Inter", sans-serif; }
+
+.app-header { text-align: center; padding: 34px 16px 6px; position: relative; z-index: 1; }
+.app-header h1 {
+  font-size: 2rem; font-weight: 700; letter-spacing: 0.24em;
+}
+.app-header h1 .accent { color: var(--accent); }
+.tagline { color: var(--muted); font-size: 0.86rem; margin-top: 6px; letter-spacing: 0.02em; }
+
+/* ---------- Bunn-navigasjon (app-følelse) ---------- */
+.tabs {
+  position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 4px; z-index: 50;
+  background: rgba(23, 23, 31, 0.85);
+  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--line);
+  padding: 6px; border-radius: 999px; box-shadow: var(--shadow);
+}
+.tab {
+  display: flex; align-items: center; gap: 7px;
+  border: none; background: transparent; color: var(--muted);
+  padding: 11px 20px; border-radius: 999px; font-size: 0.9rem; font-weight: 600;
+  font-family: "Inter", sans-serif; cursor: pointer; transition: all 0.2s;
+}
+.tab-ikon { font-size: 1rem; }
+.tab:hover { color: var(--ink); }
+.tab.active { background: var(--accent); color: var(--accent-ink); }
+
+main { max-width: 760px; margin: 0 auto; padding: 14px 16px 130px; position: relative; z-index: 1; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; animation: fadeUp 0.35s ease; }
+.tab-panel h2 { font-size: 1.2rem; margin: 26px 0 14px; letter-spacing: 0.01em; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Plaggbilder (ekte foto over tegning) ---------- */
+.foto-wrap { position: relative; display: inline-flex; }
+.garment-foto {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; border-radius: 10px; z-index: 1;
+  background: var(--tile);
+}
+/* I sveipekortet skal bildet fylle hele den lyse flaten */
+.swipe-card .garment { position: relative; overflow: hidden; }
+.swipe-card .garment .foto-wrap { position: static; }
+.swipe-card .garment .garment-foto { border-radius: 16px; }
+
+/* ---------- Sveipekort ---------- */
+.swiper-wrap { display: flex; flex-direction: column; align-items: center; }
+.card-stack { position: relative; }
+.swipe-card {
+  position: relative;
+  width: min(350px, 90vw);
+  background: linear-gradient(160deg, var(--card-2), var(--card));
+  border: 1px solid var(--line);
+  border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 18px 22px 24px; text-align: center;
+  transition: transform 0.28s ease, opacity 0.28s ease;
+}
+/* antydning av neste kort i bunken */
+.swipe-card::before {
+  content: ""; position: absolute; z-index: -1;
+  inset: 14px -12px -10px -12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--line); border-radius: var(--radius);
+}
+.swipe-card.fly-right { transform: translateX(130%) rotate(14deg); opacity: 0; }
+.swipe-card.fly-left  { transform: translateX(-130%) rotate(-14deg); opacity: 0; }
+
+.swipe-card .garment {
+  width: 100%; height: 230px; margin-bottom: 16px;
+  background: radial-gradient(circle at 50% 42%, #fbfaf6, var(--tile) 70%);
+  border-radius: 16px; display: flex; align-items: center; justify-content: center;
+}
+.swipe-card .garment svg { width: 180px; height: 180px; filter: drop-shadow(0 10px 14px rgba(0,0,0,0.18)); }
+.swipe-card h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 4px; }
+.swipe-card .meta { color: var(--muted); font-size: 0.86rem; }
+.swipe-card .price { font-weight: 600; margin-top: 8px; color: var(--accent); font-size: 0.95rem; }
+
+.tag-row { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 12px; }
+.tag {
+  background: rgba(183, 242, 75, 0.1); color: var(--accent);
+  border: 1px solid rgba(183, 242, 75, 0.25);
+  font-size: 0.72rem; font-weight: 500; padding: 4px 11px; border-radius: 999px;
+  letter-spacing: 0.03em;
+}
+
+.swipe-actions { display: flex; gap: 30px; margin: 24px 0 8px; }
+.swipe-btn {
+  width: 64px; height: 64px; border-radius: 50%;
+  font-size: 1.5rem; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+}
+.swipe-btn:hover { transform: scale(1.12); }
+.swipe-btn.ja {
+  background: var(--accent); color: var(--accent-ink); border: none;
+  box-shadow: 0 8px 28px rgba(183, 242, 75, 0.35);
+}
+.swipe-btn.nei {
+  background: var(--card-2); color: var(--danger);
+  border: 1px solid var(--line); box-shadow: var(--shadow);
+}
+.hint { color: var(--muted); font-size: 0.84rem; text-align: center; max-width: 320px; }
+
+/* ---------- Stilprofil ---------- */
+.stilprofil { margin-top: 34px; }
+.profil-card {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--radius); box-shadow: var(--shadow); padding: 22px;
+}
+.profil-card h3 { margin-bottom: 14px; font-size: 1.05rem; }
+.style-bar { margin-bottom: 12px; }
+.style-bar .label {
+  display: flex; justify-content: space-between;
+  font-size: 0.84rem; margin-bottom: 5px; color: var(--ink);
+}
+.style-bar .label span:last-child { color: var(--muted); }
+.style-bar .track { background: rgba(255,255,255,0.06); border-radius: 999px; height: 8px; overflow: hidden; }
+.style-bar .fill {
+  background: linear-gradient(90deg, var(--accent-2), var(--accent));
+  height: 100%; border-radius: 999px; transition: width 0.4s;
+}
+
+/* ---------- Kort / kontroller ---------- */
+.card {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 24px; margin-top: 12px;
+}
+.builder-controls h2 { margin: 0 0 4px; }
+.builder-controls label { display: block; font-size: 0.85rem; font-weight: 600; margin: 18px 0 9px; color: var(--muted); letter-spacing: 0.04em; text-transform: uppercase; }
+.builder-controls select {
+  width: 100%; padding: 13px 14px; border-radius: 13px;
+  border: 1px solid var(--line); font-size: 0.95rem;
+  background: var(--card-2); color: var(--ink);
+  font-family: "Inter", sans-serif;
+}
+.builder-controls select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  border: 1px solid var(--line); background: var(--card-2); color: var(--ink);
+  border-radius: 999px; padding: 9px 15px; font-size: 0.88rem;
+  font-family: "Inter", sans-serif; cursor: pointer; transition: all 0.18s;
+}
+.chip:hover { border-color: rgba(183, 242, 75, 0.5); }
+.chip.active {
+  background: var(--accent); border-color: var(--accent);
+  color: var(--accent-ink); font-weight: 600;
+}
+.primary-btn {
+  margin-top: 22px; width: 100%; padding: 15px; border: none;
+  background: var(--accent); color: var(--accent-ink);
+  font-size: 1rem; font-weight: 700; font-family: "Space Grotesk", sans-serif;
+  letter-spacing: 0.04em;
+  border-radius: 14px; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 8px 28px rgba(183, 242, 75, 0.25);
+}
+.primary-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 34px rgba(183, 242, 75, 0.4); }
+
+/* ---------- Outfit-resultater ---------- */
+.outfit-card {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 22px; margin-top: 20px;
+}
+.outfit-card h3 { font-size: 1.1rem; margin-bottom: 4px; }
+.outfit-sub { color: var(--muted); font-size: 0.84rem; margin-bottom: 16px; }
+.outfit-lay {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(86px, 1fr));
+  gap: 10px; background: var(--tile);
+  border-radius: 16px; padding: 16px;
+}
+.outfit-piece { text-align: center; }
+.outfit-piece svg { width: 72px; height: 72px; filter: drop-shadow(0 6px 8px rgba(0,0,0,0.15)); }
+.outfit-piece .navn { font-size: 0.7rem; color: #55534c; line-height: 1.25; font-weight: 500; }
+.outfit-items { margin-top: 14px; }
+.outfit-item-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 0.9rem; gap: 8px;
+}
+.outfit-item-row:last-child { border-bottom: none; }
+.outfit-item-row .venstre { flex: 1; }
+.outfit-item-row .butikk { color: var(--muted); font-size: 0.78rem; margin-top: 2px; }
+.buy-link {
+  color: var(--accent); text-decoration: none; font-weight: 600;
+  font-size: 0.84rem; white-space: nowrap;
+}
+.buy-link:hover { text-decoration: underline; }
+.outfit-footer {
+  display: flex; justify-content: space-between; align-items: center; margin-top: 16px;
+}
+.total { font-weight: 700; font-family: "Space Grotesk", sans-serif; font-size: 1.05rem; }
+.save-btn {
+  border: 1px solid rgba(183, 242, 75, 0.45); color: var(--accent); background: none;
+  border-radius: 999px; padding: 9px 18px; cursor: pointer; font-size: 0.86rem;
+  font-family: "Inter", sans-serif; font-weight: 600; transition: all 0.18s;
+}
+.save-btn:hover { background: rgba(183, 242, 75, 0.1); }
+.save-btn.saved { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+
+/* ---------- Favoritter ---------- */
+.item-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 14px;
+}
+.item-card {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: 18px; box-shadow: var(--shadow);
+  padding: 14px; text-align: center; transition: transform 0.18s;
+}
+.item-card:hover { transform: translateY(-3px); }
+.item-card .garment-mini {
+  background: var(--tile); border-radius: 12px; padding: 8px; margin-bottom: 8px;
+}
+.item-card svg { width: 78px; height: 78px; }
+.item-card .navn { font-size: 0.86rem; font-weight: 600; }
+.item-card .pris { font-size: 0.78rem; color: var(--muted); margin: 3px 0 10px; }
+.item-card .knapper { display: flex; flex-direction: column; gap: 6px; }
+.small-btn {
+  border: 1px solid var(--line); background: var(--card-2); color: var(--ink);
+  border-radius: 999px; padding: 8px 10px; font-size: 0.78rem; cursor: pointer;
+  font-family: "Inter", sans-serif; font-weight: 500; transition: all 0.15s;
+}
+.small-btn:hover { border-color: rgba(183, 242, 75, 0.5); color: var(--accent); }
+.small-btn.slett { color: var(--danger); }
+.small-btn.slett:hover { border-color: var(--danger); }
+.tom-melding { color: var(--muted); font-size: 0.9rem; padding: 12px 2px; }
+
+/* ---------- Modal (lignende plagg) ---------- */
+.modal {
+  position: fixed; inset: 0; background: rgba(8, 8, 12, 0.72);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center; z-index: 100; padding: 16px;
+}
+.modal.hidden { display: none; }
+.modal-content {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--radius); max-width: 560px;
+  width: 100%; max-height: 82vh; overflow-y: auto; padding: 26px; position: relative;
+  box-shadow: var(--shadow);
+}
+.modal-close {
+  position: absolute; top: 14px; right: 16px; border: none; background: var(--card-2);
+  width: 32px; height: 32px; border-radius: 50%;
+  font-size: 0.95rem; cursor: pointer; color: var(--muted);
+}
+.modal-close:hover { color: var(--ink); }
+.lignende-rad {
+  display: flex; align-items: center; gap: 14px;
+  padding: 11px 0; border-bottom: 1px solid var(--line);
+}
+.lignende-rad:last-child { border-bottom: none; }
+.lignende-rad .mini-tile {
+  background: var(--tile); border-radius: 10px; padding: 5px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.lignende-rad svg { width: 50px; height: 50px; }
+.lignende-rad .info { flex: 1; }
+.lignende-rad .navn { font-size: 0.92rem; font-weight: 600; }
+.lignende-rad .detalj { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+
+@media (max-width: 480px) {
+  .app-header h1 { font-size: 1.6rem; }
+  .swipe-card .garment { height: 190px; }
+  .swipe-card .garment svg { width: 150px; height: 150px; }
+  .swipe-btn { width: 58px; height: 58px; }
+  .tab { padding: 11px 14px; font-size: 0.82rem; }
+}
