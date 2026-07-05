@@ -55,10 +55,25 @@ const STORES = {
 const CATEGORIES = {
   overdel:  "Overdel",
   underdel: "Underdel",
+  kjole:    "Kjole",
   sko:      "Sko",
   yttertoy: "Yttertøy",
   tilbehor: "Tilbehør",
 };
+
+// ---------- Kjønn ----------
+// Dameplagg har kjonn: "dame" på plagget. Plagg uten felt er unisex
+// hvis id-en står i lista under, ellers herre.
+const UNISEX_IDS = new Set([
+  "o2","o3","o7","o11","o13","o16","o21","o22","o25",   // t-skjorter, hoodier, sweatshirts
+  "u5","u7","u10","u11",                                 // jeans, joggebukser, shorts
+  "s1","s4","s5","s7","s8","s11",                        // sneakers og løpesko
+  "y2","y3","y5","y7","y10",                             // bomber, denim, parkas, dun, skall
+  "t1","t5","t7","t9","t10",                             // caps, solbriller, sekk, lue
+]);
+function itemKjonn(item) {
+  return item.kjonn || (UNISEX_IDS.has(item.id) ? "unisex" : "herre");
+}
 
 // ============================================================
 // Katalog. Hvert plagg: kategori, type (styrer tegningen),
@@ -157,6 +172,42 @@ const ITEMS = [
   { id: "t7",  navn: "Sort ryggsekk",              cat: "tilbehor", type: "sekk",   color: "sort",      styles: ["street","sporty","casual"], occ: ["hverdag","aktiv"],        pris: 699,  store: "zalando", q: "sort ryggsekk" },
   { id: "t8",  navn: "Klokke med skinnrem",        cat: "tilbehor", type: "klokke", color: "brun",      styles: ["klassisk"],          occ: ["jobb","date","fest"],            pris: 1799, store: "zalando", q: "klokke skinnrem herre" },
   { id: "t9",  navn: "Sort lue",                   cat: "tilbehor", type: "lue",    color: "sort",      styles: ["street","casual"],   occ: ["hverdag","kompiser"],            pris: 199,  store: "weekday", q: "sort lue beanie" },
+
+  // ================== DAMEKATALOG ==================
+  // ---------- Overdeler ----------
+  { id: "d1",  navn: "Hvit bluse",                 cat: "overdel", type: "bluse",   color: "hvit",      kjonn: "dame", styles: ["smart","klassisk"],  occ: ["jobb","date","fest"],           pris: 449,  store: "zalando", q: "hvit bluse dame" },
+  { id: "d2",  navn: "Sort topp",                  cat: "overdel", type: "topp",    color: "sort",      kjonn: "dame", styles: ["street","smart"],    occ: ["fest","date","kompiser"],       pris: 199,  store: "hm", q: "sort topp dame" },
+  { id: "d3",  navn: "Rosa strikkegenser",         cat: "overdel", type: "genser",  color: "rosa",      kjonn: "dame", styles: ["smart","casual"],    occ: ["hverdag","date","jobb"],        pris: 499,  store: "zalando", q: "rosa strikkegenser dame" },
+  { id: "d4",  navn: "Beige cardigan",             cat: "overdel", type: "genser",  color: "beige",     kjonn: "dame", styles: ["casual","klassisk"], occ: ["hverdag","jobb","date"],        pris: 549,  store: "zara", q: "beige cardigan dame" },
+  { id: "d5",  navn: "Lyseblå skjorte",            cat: "overdel", type: "skjorte", color: "lysbla",    kjonn: "dame", styles: ["smart","klassisk"],  occ: ["jobb","date","kompiser"],       pris: 499,  store: "zalando", q: "lyseblå skjorte dame" },
+  { id: "d6",  navn: "Burgunder sateng-topp",      cat: "overdel", type: "topp",    color: "burgunder", kjonn: "dame", styles: ["smart"],             occ: ["fest","date"],                  pris: 249,  store: "hm", q: "burgunder topp dame" },
+
+  // ---------- Kjoler ----------
+  { id: "d8",  navn: "Sort minikjole",             cat: "kjole",   type: "kjole",   color: "sort",      kjonn: "dame", styles: ["smart","street"],    occ: ["fest","date"],                  pris: 599,  store: "zara", q: "sort minikjole" },
+  { id: "d9",  navn: "Rosa sommerkjole",           cat: "kjole",   type: "kjole",   color: "rosa",      kjonn: "dame", styles: ["casual","smart"],    occ: ["date","hverdag","fest"],        pris: 549,  store: "hm", q: "rosa sommerkjole" },
+  { id: "d10", navn: "Marineblå midikjole",        cat: "kjole",   type: "kjole",   color: "marine",    kjonn: "dame", styles: ["klassisk","smart"],  occ: ["jobb","date","fest"],           pris: 799,  store: "zalando", q: "marineblå midikjole" },
+  { id: "d23", navn: "Rød kjole",                  cat: "kjole",   type: "kjole",   color: "rod",       kjonn: "dame", styles: ["smart"],             occ: ["fest","date"],                  pris: 699,  store: "zara", q: "rød kjole" },
+  { id: "d24", navn: "Grå strikkekjole",           cat: "kjole",   type: "kjole",   color: "gra",       kjonn: "dame", styles: ["casual","klassisk"], occ: ["hverdag","jobb","date"],        pris: 649,  store: "hm", q: "grå strikkekjole" },
+
+  // ---------- Underdeler ----------
+  { id: "d11", navn: "Sort skjørt",                cat: "underdel", type: "skjort", color: "sort",      kjonn: "dame", styles: ["smart","street"],    occ: ["fest","date","jobb"],           pris: 399,  store: "hm", q: "sort skjørt" },
+  { id: "d12", navn: "Beige plissert skjørt",      cat: "underdel", type: "skjort", color: "beige",     kjonn: "dame", styles: ["klassisk","smart"],  occ: ["jobb","date"],                  pris: 499,  store: "zalando", q: "beige plissert skjørt" },
+  { id: "d13", navn: "Vintage-jeans med høyt liv", cat: "underdel", type: "bukse",  color: "denim",     kjonn: "dame", styles: ["casual","street"],   occ: ["hverdag","kompiser","date"],    pris: 599,  store: "weekday", q: "high waist jeans dame" },
+  { id: "d14", navn: "Sorte leggings",             cat: "underdel", type: "joggebukse", color: "sort",  kjonn: "dame", styles: ["sporty","casual"],   occ: ["aktiv","hverdag"],              pris: 249,  store: "hm", q: "sorte leggings" },
+  { id: "d15", navn: "Hvit linbukse",              cat: "underdel", type: "bukse",  color: "hvit",      kjonn: "dame", styles: ["smart"],             occ: ["date","fest","kompiser"],       pris: 549,  store: "zara", q: "hvit linbukse dame" },
+
+  // ---------- Sko ----------
+  { id: "d16", navn: "Sorte pumps",                cat: "sko",     type: "pumps",   color: "sort",      kjonn: "dame", styles: ["klassisk","smart"],  occ: ["fest","jobb","date"],           pris: 899,  store: "zalando", q: "sorte pumps" },
+  { id: "d17", navn: "Beige ballerinasko",         cat: "sko",     type: "pumps",   color: "beige",     kjonn: "dame", styles: ["klassisk","smart"],  occ: ["jobb","date","hverdag"],        pris: 599,  store: "zalando", q: "beige ballerinasko" },
+  { id: "d18", navn: "Brune høye støvletter",      cat: "sko",     type: "boots",   color: "brun",      kjonn: "dame", styles: ["klassisk","smart"],  occ: ["jobb","date","fest"],           pris: 1399, store: "zalando", q: "brune støvletter dame" },
+
+  // ---------- Yttertøy ----------
+  { id: "d19", navn: "Beige kåpe",                 cat: "yttertoy", type: "frakk",  color: "beige",     kjonn: "dame", styles: ["klassisk","smart"],  occ: ["jobb","date"],                  pris: 1599, store: "zara", q: "beige kåpe" },
+  { id: "d20", navn: "Sort blazer",                cat: "yttertoy", type: "blazer", color: "sort",      kjonn: "dame", styles: ["smart","klassisk"],  occ: ["jobb","fest","date"],           pris: 999,  store: "hm", q: "sort blazer dame" },
+
+  // ---------- Tilbehør ----------
+  { id: "d21", navn: "Sort håndveske",             cat: "tilbehor", type: "veske",  color: "sort",      kjonn: "dame", styles: ["smart","klassisk"],  occ: ["fest","jobb","date"],           pris: 799,  store: "zalando", q: "sort håndveske" },
+  { id: "d22", navn: "Beige skulderveske",         cat: "tilbehor", type: "veske",  color: "beige",     kjonn: "dame", styles: ["smart","casual"],    occ: ["hverdag","date","kompiser"],    pris: 599,  store: "hm", q: "beige skulderveske" },
 ];
 
 // ============================================================
@@ -264,6 +315,39 @@ function garmentSVG(type, hex) {
       <rect x="40" y="40" width="16" height="22" fill="none" stroke="${l}" stroke-width="3.5" rx="3"/>
       <line x1="48" y1="44" x2="48" y2="58" stroke="${l}" stroke-width="2.5"/>
       <circle cx="26" cy="51" r="1.6" fill="${d}"/><circle cx="33" cy="51" r="1.6" fill="${d}"/>`,
+    bluse: `
+      <path d="M33 20 L44 14 Q50 20 56 14 L67 20 L78 33 L71 42 L67 38 L69 82 Q60 87 50 87 Q40 87 31 82 L33 38 L29 42 L22 33 Z" fill="${hex}" stroke="${d}" stroke-width="2"/>
+      <path d="M44 14 Q50 23 56 14" fill="none" stroke="${d}" stroke-width="2"/>
+      <path d="M50 23 L50 34" stroke="${d}" stroke-width="1.5"/>
+      <circle cx="50" cy="28" r="1.2" fill="${d}"/><circle cx="50" cy="33" r="1.2" fill="${d}"/>
+      <path d="M36 78 Q50 84 64 78" fill="none" stroke="${d}" stroke-width="1.5" opacity="0.6"/>`,
+    topp: `
+      <path d="M38 16 L42 14 Q44 30 50 30 Q56 30 58 14 L62 16 L66 26 L64 84 Q50 88 36 84 L34 26 Z" fill="${hex}" stroke="${d}" stroke-width="2"/>
+      <path d="M42 14 Q44 30 50 30 Q56 30 58 14" fill="none" stroke="${d}" stroke-width="2"/>
+      <path d="M38 76 Q50 80 62 76" fill="none" stroke="${d}" stroke-width="1.2" opacity="0.5"/>`,
+    kjole: `
+      <path d="M38 14 L44 12 Q46 24 50 24 Q54 24 56 12 L62 14 L66 26 L62 48 L72 86 Q50 93 28 86 L38 48 L34 26 Z" fill="${hex}" stroke="${d}" stroke-width="2"/>
+      <path d="M44 12 Q46 24 50 24 Q54 24 56 12" fill="none" stroke="${d}" stroke-width="2"/>
+      <path d="M38 48 L62 48" stroke="${d}" stroke-width="1.5" opacity="0.7"/>
+      <path d="M44 52 L40 84" stroke="${d}" stroke-width="1" opacity="0.4"/>
+      <path d="M56 52 L60 84" stroke="${d}" stroke-width="1" opacity="0.4"/>
+      <path d="M50 52 L50 86" stroke="${d}" stroke-width="1" opacity="0.4"/>`,
+    skjort: `
+      <path d="M36 24 L64 24 L66 32 L74 76 Q50 83 26 76 L34 32 Z" fill="${hex}" stroke="${d}" stroke-width="2"/>
+      <rect x="35" y="24" width="30" height="7" fill="${d}" opacity="0.4"/>
+      <path d="M42 33 L37 74" stroke="${d}" stroke-width="1" opacity="0.4"/>
+      <path d="M50 33 L50 78" stroke="${d}" stroke-width="1" opacity="0.4"/>
+      <path d="M58 33 L63 74" stroke="${d}" stroke-width="1" opacity="0.4"/>`,
+    pumps: `
+      <path d="M20 58 Q30 44 44 46 Q60 48 70 56 Q80 60 82 66 L82 70 L72 70 Q62 62 50 62 L34 68 L20 68 Z" fill="${hex}" stroke="${d}" stroke-width="2"/>
+      <path d="M74 70 L78 88 L84 88 L82 68 Z" fill="${d}"/>
+      <path d="M20 68 L34 68 L32 72 L20 72 Z" fill="${shade(hex,-60)}"/>
+      <path d="M30 52 Q38 48 46 50" fill="none" stroke="${l}" stroke-width="1.5" opacity="0.8"/>`,
+    veske: `
+      <path d="M36 34 Q36 18 50 18 Q64 18 64 34" fill="none" stroke="${d}" stroke-width="3.5"/>
+      <path d="M26 36 L74 36 L78 76 Q78 82 70 82 L30 82 Q22 82 22 76 Z" fill="${hex}" stroke="${d}" stroke-width="2"/>
+      <path d="M26 48 L74 48" stroke="${d}" stroke-width="1.5" opacity="0.6"/>
+      <rect x="44" y="42" width="12" height="10" rx="2" fill="${l}" stroke="${d}" stroke-width="1.5"/>`,
     solbriller: `
       <rect x="16" y="41" width="28" height="19" rx="9" fill="${hex}" stroke="${d}" stroke-width="2"/>
       <rect x="56" y="41" width="28" height="19" rx="9" fill="${hex}" stroke="${d}" stroke-width="2"/>

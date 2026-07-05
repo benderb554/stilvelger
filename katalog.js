@@ -7,6 +7,7 @@ const FEED_ITEMS = [
     "cat": "overdel",
     "type": "skjorte",
     "color": "lysbla",
+    "kjonn": "unisex",
     "styles": [
       "smart",
       "klassisk"
@@ -28,6 +29,7 @@ const FEED_ITEMS = [
     "cat": "underdel",
     "type": "bukse",
     "color": "denim",
+    "kjonn": "unisex",
     "styles": [
       "casual",
       "smart",
@@ -50,6 +52,7 @@ const FEED_ITEMS = [
     "cat": "overdel",
     "type": "tskjorte",
     "color": "hvit",
+    "kjonn": "unisex",
     "styles": [
       "casual",
       "street"
@@ -70,6 +73,7 @@ const FEED_ITEMS = [
     "cat": "underdel",
     "type": "bukse",
     "color": "lysbla",
+    "kjonn": "unisex",
     "styles": [
       "casual",
       "smart",
@@ -92,6 +96,7 @@ const FEED_ITEMS = [
     "cat": "overdel",
     "type": "hoodie",
     "color": "sort",
+    "kjonn": "unisex",
     "styles": [
       "street",
       "casual"
@@ -111,6 +116,7 @@ const FEED_ITEMS = [
     "cat": "sko",
     "type": "sneaker",
     "color": "hvit",
+    "kjonn": "unisex",
     "styles": [
       "casual",
       "street",
@@ -132,6 +138,7 @@ const FEED_ITEMS = [
     "cat": "underdel",
     "type": "bukse",
     "color": "beige",
+    "kjonn": "herre",
     "styles": [
       "smart",
       "casual"

@@ -324,7 +324,13 @@ main { max-width: 760px; margin: 0 auto; padding: 14px 16px 130px; position: rel
 .konto-feil { color: var(--danger); font-size: 0.85rem; min-height: 1.2em; margin-top: 10px; }
 .konto-valgfritt { text-transform: none; letter-spacing: 0; font-weight: 400; }
 .konto-card .chips { margin-top: 2px; }
-.konto-registrer { display: block; width: 100%; margin-top: 10px; text-align: center; }
+.konto-registrer, .konto-bytt { display: block; width: 100%; margin-top: 10px; text-align: center; }
+.konto-uten {
+  display: block; width: 100%; margin-top: 14px; padding: 8px;
+  background: none; border: none; color: var(--muted);
+  font-size: 0.85rem; cursor: pointer; font-family: "Inter", sans-serif;
+}
+.konto-uten:hover { color: var(--ink); text-decoration: underline; }
 .utlogging { background: var(--card-2); color: var(--ink); box-shadow: none; border: 1px solid var(--line); }
 
 /* ---------- Bunntekst ---------- */

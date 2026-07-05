@@ -51,6 +51,28 @@ function storeLink(item) {
 }
 
 // ============================================================
+// KJØNNSFILTER
+// Innloggede brukere ser sitt kjønn + unisex; "annet" og gjester ser alt.
+// ============================================================
+function aktivtKjonn() {
+  return (typeof brukerKjonn !== "undefined" && brukerKjonn) ? brukerKjonn : null;
+}
+function passerKjonn(item) {
+  const k = aktivtKjonn();
+  if (!k || k === "annet") return true;
+  const ik = itemKjonn(item);
+  return ik === "unisex" || ik === (k === "dame" ? "dame" : "herre");
+}
+// I et antrekk må plaggene passe sammen: dameplagg kombineres aldri
+// med herreplagg, uansett hva brukeren ser i katalogen.
+function kjonnKompatibel(cand, base) {
+  const bk = itemKjonn(base);
+  if (bk === "unisex") return passerKjonn(cand);
+  const ck = itemKjonn(cand);
+  return ck === "unisex" || ck === bk;
+}
+
+// ============================================================
 // STILPROFIL – teller stil-tags fra likte (og trekker litt for mislikte)
 // ============================================================
 function styleProfile() {
@@ -81,7 +103,7 @@ function colorsMatch(a, b) {
 // ============================================================
 function similarItems(item, max = 5) {
   return ITEMS
-    .filter(i => i.id !== item.id && i.cat === item.cat)
+    .filter(i => i.id !== item.id && i.cat === item.cat && kjonnKompatibel(i, item))
     .map(i => {
       let score = 0;
       i.styles.forEach(s => { if (item.styles.includes(s)) score += 2; });
@@ -116,7 +138,7 @@ function scoreCandidate(cand, chosen, occasion) {
 
 function pickForSlot(cat, chosen, occasion, exclude) {
   const cands = ITEMS
-    .filter(i => i.cat === cat && !exclude.has(i.id))
+    .filter(i => i.cat === cat && !exclude.has(i.id) && kjonnKompatibel(i, chosen[0]))
     .map(i => ({ item: i, score: scoreCandidate(i, chosen, occasion) }))
     .filter(r => r.score > -Infinity)
     .sort((a, b) => b.score - a.score);
@@ -125,7 +147,10 @@ function pickForSlot(cat, chosen, occasion, exclude) {
 
 function buildOutfit(base, occasion, exclude) {
   const chosen = [base];
-  const slots = ["overdel", "underdel", "sko"].filter(c => c !== base.cat);
+  // En kjole dekker både overdel og underdel – da trengs bare sko.
+  const slots = base.cat === "kjole"
+    ? ["sko"]
+    : ["overdel", "underdel", "sko"].filter(c => c !== base.cat);
   for (const slot of slots) {
     const pick = pickForSlot(slot, chosen, occasion, exclude);
     if (!pick) return null; // fant ikke noe som passer
@@ -170,8 +195,9 @@ document.querySelectorAll(".tab").forEach(btn => {
 // ============================================================
 function makeDeck() {
   const seen = new Set([...state.likes, ...state.dislikes]);
-  const unseen = ITEMS.filter(i => !seen.has(i.id));
-  const rest = ITEMS.filter(i => seen.has(i.id));
+  const tilgjengelig = ITEMS.filter(passerKjonn);
+  const unseen = tilgjengelig.filter(i => !seen.has(i.id));
+  const rest = tilgjengelig.filter(i => seen.has(i.id));
   // usette først (tilfeldig rekkefølge), så resten
   state.deck = [...unseen.sort(() => Math.random() - 0.5), ...rest.sort(() => Math.random() - 0.5)];
   state.deckIndex = 0;
@@ -295,8 +321,8 @@ function renderProfil() {
 function fillBaseSelect() {
   const sel = document.getElementById("base-select");
   const forrige = sel.value;
-  const likte = state.likes.map(byId).filter(Boolean);
-  const andre = ITEMS.filter(i => !state.likes.includes(i.id));
+  const likte = state.likes.map(byId).filter(Boolean).filter(passerKjonn);
+  const andre = ITEMS.filter(i => !state.likes.includes(i.id) && passerKjonn(i));
   let html = "";
   if (likte.length) {
     html += `<optgroup label="❤️ Plagg du har likt">` +

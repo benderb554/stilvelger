@@ -33,6 +33,13 @@ COLUMN_ALIASES = {
 # ---------- Plaggtype ut fra nøkkelord i navn/kategori ----------
 # (nøkkelord, kategori i appen, tegning, stiler, anledninger)
 TYPE_RULES = [
+    (r"kjole|\bdress\b",                 "kjole",    "kjole",      ["smart"],                       ["fest", "date"]),
+    (r"skjørt|skirt",                    "underdel", "skjort",     ["smart"],                       ["jobb", "date", "fest"]),
+    (r"bluse|blouse",                    "overdel",  "bluse",      ["smart", "klassisk"],           ["jobb", "date", "fest"]),
+    (r"\btopp\b|\btop\b|singlet",        "overdel",  "topp",       ["smart", "casual"],             ["fest", "date", "hverdag"]),
+    (r"pumps|høye? hæler|heels|ballerina", "sko",    "pumps",      ["klassisk", "smart"],           ["fest", "jobb", "date"]),
+    (r"veske|håndveske|\bbag\b",         "tilbehor", "veske",      ["smart"],                       ["fest", "jobb", "date", "hverdag"]),
+    (r"leggings|tights",                 "underdel", "joggebukse", ["sporty"],                      ["aktiv", "hverdag"]),
     (r"hoodie|hettegenser",              "overdel",  "hoodie",     ["street", "casual"],            ["kompiser", "hverdag"]),
     (r"t-?skjorte|t-?shirt|tee\b",       "overdel",  "tskjorte",   ["casual", "street"],            ["kompiser", "hverdag", "date"]),
     (r"pique|polo",                      "overdel",  "pique",      ["smart", "klassisk"],           ["kompiser", "jobb", "date"]),
@@ -95,6 +102,13 @@ def gjett_farge(tekst):
             return farge
     return "gra"  # trygg nøytral standard
 
+def gjett_kjonn(tekst):
+    if re.search(r"dame|women|woman|kvinne|lady|femme|kjole|skjørt|bluse", tekst):
+        return "dame"
+    if re.search(r"herre|\bmen\b|\bman\b|homme|\bmens\b", tekst):
+        return "herre"
+    return "unisex"
+
 def parse_pris(raatekst):
     """'599.00 NOK' / '1 299,50' / '499' -> heltall kroner"""
     tall = re.sub(r"[^\d,\.]", "", raatekst or "").replace(",", ".")
@@ -150,6 +164,7 @@ def main():
             "cat": cat,
             "type": typ,
             "color": gjett_farge(soketekst),
+            "kjonn": gjett_kjonn(soketekst),
             "styles": stiler,
             "occ": anledninger,
             "pris": pris,
