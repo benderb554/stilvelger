@@ -9,6 +9,10 @@ let fbAuth = null;
 let fbDb = null;
 let innloggetBruker = null;
 let lagreTimer = null;
+let brukerKjonn = null;   // "dame" | "mann" | "annet"
+let valgtKjonn = null;    // valget i registreringsskjemaet
+
+const KJONN = { dame: "Dame", mann: "Mann", annet: "Annet / vil ikke oppgi" };
 
 const kontoAktivert = (() => {
   try {
@@ -33,6 +37,7 @@ function skyLagre() {
       likes: state.likes,
       dislikes: state.dislikes,
       savedOutfits: state.savedOutfits,
+      kjonn: brukerKjonn || null,
       oppdatert: new Date().toISOString(),
     }).catch(e => console.warn("Skylagring feilet:", e));
   }, 800);
@@ -46,6 +51,7 @@ function slaaSammenLister(lokal, sky) {
 async function hentOgSlaaSammen(uid) {
   const doc = await fbDb.collection("users").doc(uid).get();
   const sky = doc.exists ? doc.data() : {};
+  brukerKjonn = sky.kjonn || brukerKjonn;
   state.likes = slaaSammenLister(state.likes, sky.likes);
   state.dislikes = slaaSammenLister(state.dislikes, sky.dislikes)
     .filter(id => !state.likes.includes(id)); // en like vinner over en gammel nei
@@ -103,8 +109,20 @@ function renderKonto() {
       <p class="konto-epost">👤 ${innloggetBruker.email}</p>
       <p class="konto-info">✓ Favoritter og outfits synkroniseres automatisk.
       Logg inn på en annen enhet, så er alt der.</p>
+      <label class="konto-label">Kjønn</label>
+      <div class="chips" id="kjonn-chips-inne">
+        ${Object.entries(KJONN).map(([key, navn]) =>
+          `<button class="chip ${key === brukerKjonn ? "active" : ""}" data-kjonn="${key}">${navn}</button>`).join("")}
+      </div>
       <button id="btn-loggut" class="primary-btn utlogging">Logg ut</button>`;
     document.getElementById("btn-loggut").addEventListener("click", () => fbAuth.signOut());
+    kontoBody.querySelectorAll("#kjonn-chips-inne .chip").forEach(chip => {
+      chip.addEventListener("click", () => {
+        brukerKjonn = chip.dataset.kjonn;
+        skyLagre();
+        renderKonto();
+      });
+    });
   } else {
     kontoBody.innerHTML = `
       <h2>Logg inn eller opprett bruker</h2>
@@ -114,6 +132,11 @@ function renderKonto() {
       <input id="konto-epost" type="email" class="konto-input" placeholder="din@epost.no" autocomplete="email">
       <label class="konto-label" for="konto-passord">Passord</label>
       <input id="konto-passord" type="password" class="konto-input" placeholder="Minst 6 tegn" autocomplete="current-password">
+      <label class="konto-label">Kjønn <span class="konto-valgfritt">(ved ny bruker – for riktige anbefalinger)</span></label>
+      <div class="chips" id="kjonn-chips">
+        ${Object.entries(KJONN).map(([key, navn]) =>
+          `<button class="chip" data-kjonn="${key}">${navn}</button>`).join("")}
+      </div>
       <p id="konto-feil" class="konto-feil"></p>
       <button id="btn-loggin" class="primary-btn">Logg inn</button>
       <button id="btn-registrer" class="save-btn konto-registrer">Ny her? Opprett bruker</button>`;
@@ -122,13 +145,29 @@ function renderKonto() {
       epost: document.getElementById("konto-epost").value.trim(),
       passord: document.getElementById("konto-passord").value,
     });
+    valgtKjonn = null;
+    kontoBody.querySelectorAll("#kjonn-chips .chip").forEach(chip => {
+      chip.addEventListener("click", () => {
+        valgtKjonn = chip.dataset.kjonn;
+        kontoBody.querySelectorAll("#kjonn-chips .chip").forEach(c => c.classList.remove("active"));
+        chip.classList.add("active");
+      });
+    });
     document.getElementById("btn-loggin").addEventListener("click", async () => {
       const { epost, passord } = hentFelt();
       try { await fbAuth.signInWithEmailAndPassword(epost, passord); } catch (e) { visKontoFeil(e); }
     });
     document.getElementById("btn-registrer").addEventListener("click", async () => {
       const { epost, passord } = hentFelt();
-      try { await fbAuth.createUserWithEmailAndPassword(epost, passord); } catch (e) { visKontoFeil(e); }
+      if (!valgtKjonn) {
+        document.getElementById("konto-feil").textContent = "Velg kjønn for å opprette bruker.";
+        return;
+      }
+      try {
+        brukerKjonn = valgtKjonn;
+        await fbAuth.createUserWithEmailAndPassword(epost, passord);
+        // kjønnet skrives til skyen via synken som starter ved innlogging
+      } catch (e) { visKontoFeil(e); }
     });
     document.getElementById("konto-passord").addEventListener("keydown", e => {
       if (e.key === "Enter") document.getElementById("btn-loggin").click();
